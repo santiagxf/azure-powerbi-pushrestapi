@@ -32,7 +32,8 @@ namespace Analytics.RealTimeAnalytics.FraudDetection
             dynamic data = JsonConvert.DeserializeObject(requestBody);
 
             log.LogInformation($"Posting data to {powerBiApiUrl}");
-            return PostData(powerBiApiUrl, data, log);
+            HttpResponseMessage task = PostData(powerBiApiUrl, data, log);
+            return (ActionResult)new OkObjectResult("Completed");
         }
 
         static async Task<HttpResponseMessage> PostData(String powerBIurl, object data, ILogger log)
