@@ -23,7 +23,7 @@ namespace Analytics.RealTimeAnalytics.FraudDetection
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-            string powerBiApiUrl = System.Environment.GetEnvironmentVariable(APICONFIG, EnvironmentVariableTarget.Process);
+            string powerBiApiUrl = Environment.GetEnvironmentVariable(APICONFIG, EnvironmentVariableTarget.Process);
             if (string.IsNullOrEmpty(powerBiApiUrl)) {
                 throw new WebException($"{APICONFIG} not defined");
             }
