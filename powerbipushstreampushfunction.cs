@@ -35,12 +35,12 @@ namespace Analytics.RealTimeAnalytics.FraudDetection
             return await PostData(powerBiApiUrl, data, log);
         }
 
-        static async Task<HttpResponseMessage> PostData(String powerBIurl, object data, ILogger log)
+        static async Task<IActionResult> PostData(String powerBIurl, object data, ILogger log)
         {
             HttpResponseMessage response = await client.PostAsJsonAsync(powerBIurl, data);
             response.EnsureSuccessStatusCode();
             log.LogInformation($"Response: {response.ReasonPhrase}");
-            return response;
+            return new StatusCodeResult((int)response.StatusCode);
         }     
     }
 }
