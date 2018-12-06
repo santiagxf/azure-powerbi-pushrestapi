@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Net;
 
 namespace Analytics.RealTimeAnalytics.FraudDetection
 {
     public static class powerbipushstreampushfunction
     {
         private static readonly string APICONFIG = "powerBiApiUrl";
+        private static readonly HttpClient client = new HttpClient();
 
         [FunctionName("powerbipushstreampushfunction")]
         public static async Task<IActionResult> Run(
@@ -25,20 +27,18 @@ namespace Analytics.RealTimeAnalytics.FraudDetection
             if (string.IsNullOrEmpty(powerBiApiUrl)) {
                 throw new WebException($"{APICONFIG} not defined");
             }
-            string name = req.Query["name"];
-
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
 
-            return PostData(powerBiApiUrl, data ,log)
+            log.LogInformation($"Posting data to {powerBiApiUrl}");
+            return PostData(powerBiApiUrl, data, log);
         }
 
-        static async Task<httpresponsemessage> PostData(String powerBIurl, dynamic data, TraceWriter log)
+        static async Task<HttpResponseMessage> PostData(String powerBIurl, object data, ILogger log)
         {
             HttpResponseMessage response = await client.PostAsJsonAsync(powerBIurl, data);
             response.EnsureSuccessStatusCode();
-            log.Info($"{NAME} response: {response.ReasonPhrase}");
+            log.LogInformation($"Response: {response.ReasonPhrase}");
             return response;
         }     
     }
