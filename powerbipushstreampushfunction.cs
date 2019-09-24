@@ -23,8 +23,7 @@ namespace Analytics.RealTimeAnalytics.FraudDetection
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-            //string powerBiApiUrl = Environment.GetEnvironmentVariable(APICONFIG, EnvironmentVariableTarget.Process);
-            string powerBiApiUrl = @"https://api.powerbi.com/beta/72f988bf-86f1-41af-91ab-2d7cd011db47/datasets/c785bceb-1185-44b0-b58c-610009185bbb/rows?key=DgUXn4%2FSwTgCOsRdbKNcc5k7GifZB19QCLylxMBF7BL%2BBGX6xo9x39Y%2FSTXHHBoars8LYUVDOBgyyTxryKLpjQ%3D%3D";
+            string powerBiApiUrl = Environment.GetEnvironmentVariable("powerBiApiUrl");
             if (string.IsNullOrEmpty(powerBiApiUrl)) {
                 throw new WebException($"{APICONFIG} not defined");
             }
